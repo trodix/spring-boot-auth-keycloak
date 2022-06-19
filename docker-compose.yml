@@ -1,20 +1,18 @@
 version: '3'
 
-volumes:
-  postgres_data:
-      driver: local
-
 services:
   postgres:
       image: postgres
-      volumes:
-        - postgres_data:/var/lib/postgresql/data
       environment:
         POSTGRES_DB: keycloak
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
       ports:
         - 5432:5432
+      networks:
+        - market-app-network
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
   keycloak:
       image: quay.io/keycloak/keycloak:legacy
       environment:
@@ -34,5 +32,33 @@ services:
         - 9990:9990
       depends_on:
         - postgres
+        - openldap
+      networks:
+        - market-app-network
       volumes:
         - ./keycloak/realms/realm-export.json:/tmp/realm-export.json
+
+  openldap:
+      image: docker.io/bitnami/openldap:2.6
+      environment:
+          LDAP_ROOT: dc=trodix,dc=com
+          LDAP_ADMIN_USERNAME: admin
+          LDAP_ADMIN_PASSWORD: admin
+          LDAP_USERS: user1,user2, user3
+          LDAP_PASSWORDS: user1,user2,user3
+      ports:
+        - 1389:1389
+        - 1636:1636
+      networks:
+        - market-app-network
+      volumes:
+        - openldap_data:/bitnami/openldap
+
+networks:
+  market-app-network:
+    driver: bridge
+volumes:
+  postgres_data:
+      driver: local
+  openldap_data:
+    driver: local

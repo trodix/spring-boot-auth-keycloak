@@ -1,0 +1,53 @@
+version: 1
+
+dn: dc=trodix,dc=com
+objectClass: dcObject
+objectClass: organization
+dc: trodix
+o: example
+
+dn: ou=market-app,dc=trodix,dc=com
+objectClass: organizationalUnit
+ou: market-app
+
+dn: cn=user1,ou=market-app,dc=trodix,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: posixAccount
+objectClass: shadowAccount
+objectClass: top
+cn: User1
+gidNumber: 1000
+homeDirectory: /home/user1
+sn: Bar1
+uid: user1
+uidNumber: 1000
+userPassword:: dXNlcjE=
+
+dn: cn=user2,ou=market-app,dc=trodix,dc=com
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: posixAccount
+objectClass: shadowAccount
+objectClass: top
+cn: User2
+gidNumber: 1001
+homeDirectory: /home/user2
+sn: Bar2
+uid: user2
+uidNumber: 1001
+userPassword:: dXNlcjI=
+
+dn: cn=user3,ou=market-app,dc=trodix,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: User3
+gidNumber: 1002
+homeDirectory: /home/user3
+sn: Bar3
+uid: user3
+uidNumber: 1002
+userPassword:: dXNlcjM=
+
