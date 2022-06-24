@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true" scanPeriod="15 seconds">
 	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
     <property name="LOGS" value="./logs" />
@@ -41,8 +41,8 @@
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.baeldung*" at TRACE level -->
-    <logger name="de.codecentric.boot.admin.client.registration.ApplicationRegistrator" level="trace" additivity="false">
+    <!-- LOG custom level -->
+    <logger name="org.springframework.security" level="info" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
