@@ -4,8 +4,8 @@
 
     <changeSet id="create-products-table" author="svallet">
         <createTable tableName="products">
-            <column name="id" type="BIGINT" autoIncrement="true" incrementBy="1">
-                <constraints primaryKey="true" nullable="false" />
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" />
             </column>
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false" />

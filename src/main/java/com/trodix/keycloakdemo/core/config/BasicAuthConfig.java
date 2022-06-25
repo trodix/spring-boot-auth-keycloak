@@ -38,8 +38,8 @@ public class BasicAuthConfig extends WebSecurityConfigurerAdapter {
                 // TODO Restrict Spring Boot Admin and actuator endpoints to ADMINISTRATOR role
                 // .and().authorizeHttpRequests().antMatchers("/actuator/**", this.adminServer.getContextPath() +
                 // "/**").hasRole("ADMINISTRATOR")
-                .and()
-                .authorizeHttpRequests().anyRequest().permitAll()
+                // .and()
+                // .authorizeHttpRequests().anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(
