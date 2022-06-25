@@ -26,7 +26,8 @@ public class ProductService {
 
     public ProductModel saveProduct(final ProductModel productModel) {
         final Product product = productMapper.productModelToProduct(productModel);
-        return productMapper.productToProductModel(productRepository.saveAndFlush(product));
+        final Product saveAndFlush = productRepository.saveAndFlush(product);
+        return productMapper.productToProductModel(saveAndFlush);
     }
 
 }
