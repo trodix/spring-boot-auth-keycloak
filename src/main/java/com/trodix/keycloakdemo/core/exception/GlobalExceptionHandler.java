@@ -55,16 +55,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status,
             final WebRequest request) {
-        
+
         final List<String> errorList = ex
-            .getBindingResult()
-            .getFieldErrors()
-            .stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .collect(Collectors.toList());
-        
-        final ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errorList);
-        
+                .getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+        logger.info(ex.getBindingResult());
+
+        final ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST,
+                "Validation failed for provided request body with " + ex.getErrorCount() + " error(s).", errorList);
+
         return handleExceptionInternal(ex, errorDetails, headers, errorDetails.getStatus(), request);
     }
 

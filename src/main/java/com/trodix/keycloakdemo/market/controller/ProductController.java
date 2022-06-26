@@ -2,6 +2,7 @@ package com.trodix.keycloakdemo.market.controller;
 
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public class ProductController {
 
     @PostMapping
     @RolesAllowed({"market-admin"})
-    public ProductResponse createProduct(@RequestBody final CreateProductRequest productRequest) {
+    public ProductResponse createProduct(@Valid @RequestBody final CreateProductRequest productRequest) {
         final ProductModel productModel = productMapper.createProductRequestToProductModel(productRequest);
         return productMapper.productModelToProductResponse(productService.saveProduct(productModel));
     }
