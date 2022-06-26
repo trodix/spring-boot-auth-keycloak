@@ -1,0 +1,68 @@
+package com.trodix.keycloakdemo.market.controller;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import com.trodix.keycloakdemo.core.config.BasicAuthConfig;
+import com.trodix.keycloakdemo.core.config.InMemoryCredentialsProperties;
+import com.trodix.keycloakdemo.market.dto.response.ProductResponse;
+import com.trodix.keycloakdemo.market.model.ProductModel;
+import de.codecentric.boot.admin.server.config.AdminServerProperties;
+
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(ProductController.class)
+@ActiveProfiles(profiles = "test")
+@ImportAutoConfiguration(classes = {BasicAuthConfig.class, InMemoryCredentialsProperties.class, AdminServerProperties.class})
+public class ProductControllerIT {
+
+    @Autowired
+    private MockMvc mvc;
+
+    // @MockBean
+    // private ProductService productService;
+
+    @Autowired
+    private JacksonTester<List<ProductResponse>> jsonProductResponseList;
+
+    @Test
+    void getAllProducts_success() throws Exception {
+        final List<ProductModel> productModelList = new ArrayList<>();
+        productModelList.add(new ProductModel(1L, "Mannon", "RobotMan"));
+
+        final List<ProductResponse> productResponseList = new ArrayList<>();
+        final ProductResponse productResponse = new ProductResponse(1L, "Mannon", "RobotMan");
+        productResponseList.add(productResponse);
+
+        // given
+        // given(productService.getAllProducts())
+        // .willReturn(productModelList);
+
+        // when
+        final RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/products")
+                .accept(MediaType.APPLICATION_JSON);
+
+        final MockHttpServletResponse response = mvc.perform(request).andReturn().getResponse();
+
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo(
+                jsonProductResponseList.write(productResponseList).getJson());
+    }
+
+}
