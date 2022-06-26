@@ -32,7 +32,8 @@ public class ProductController {
     @GetMapping
     @RolesAllowed({"market-customer", "market-admin"})
     public List<ProductResponse> getProducts() {
-        return productMapper.productModelListToProductResponseList(productService.getAllProducts());
+        final List<ProductModel> allProducts = productService.getAllProducts();
+        return productMapper.productModelListToProductResponseList(allProducts);
     }
 
     @PostMapping
