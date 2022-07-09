@@ -23,3 +23,9 @@ Open REST API to <http://localhost:9090>
 ### Generate a token with Postman
 
 <img src="./documentation/img/postman_oauth2_get_token.png" />
+
+## Tests
+
+### Generate Code Coveage report
+
+`mvn jacoco:prepare-agent test install jacoco:report`

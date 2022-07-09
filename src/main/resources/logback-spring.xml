@@ -36,8 +36,7 @@
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG custom level -->
-    <logger name="org.springframework.security" level="info" additivity="false">
+    <logger name="com.trodix.keycloakdemo.core.performancelogging.aspect.PerformanceLoggingAspect" level="warn" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
