@@ -2,17 +2,78 @@
 
 ## Development setup
 
-### Run Keycloak
+### Run Microservices
 
 `docker-compose up`
 
-Open keycloak to <http://localhost:8080>
+Available microservices:
+
+#### **Postgresql**
+
+> Database for keycloak
+
+Port `5432`
+
+#### **Keycloak**
+
+> Authentication server (SSO)
+
+Port `8080` for web ui
+
+Port `9990` for wildfly managment interface
+
+#### **OpenLDAP**
+
+> Users and Groups source (synchronized with Keycloak)
+
+port LDAP `1389`
+
+port LDAPS `1636`
+
+#### **Prometheus**
+
+> Metrics agregator
+
+Port `9090`
+
+#### **Node exporter**
+
+> Linux metrics collector
+
+Port `5100`
+
+#### **Cadvisor**
+
+> Docker metrics collector
+
+Port `5110`
+
+#### **Grafana**
+
+> Metrics visualisation and alerting
+
+Port `3000`
+
+#### **Grafana renderer**
+
+> Transform metrics Graphs to .png images for mailing alerts
+
+Port `3001`
+
+#### **Maildev**
+
+> Development SMTP server for grafana mail alerts
+
+Port SMTP `1025`
+
+Port Webmail `1080`
 
 ### Run backend API
 
 `mvn spring-boot:run`
 
-Open REST API to <http://localhost:9090>
+Open REST API to <http://localhost:8000>
+<img src="./documentation/img/rest_api_swagger_doc.png" />
 
 ### Add users and assign them to roles
 
@@ -29,3 +90,17 @@ Open REST API to <http://localhost:9090>
 ### Generate Code Coveage report
 
 `mvn jacoco:prepare-agent test install jacoco:report`
+
+## Monitoring
+
+### With SpringBootAdmin
+
+<http://localhost:8000/admin>
+<img src="./documentation/img/spring-boot_admin.png" />
+
+### With grafana:
+
+<img src="./documentation/img/grafana_dashboard_host_docker.png" />
+<img src="./documentation/img/grafana_dashboard_jvm.png" />
+<img src="./documentation/img/grafana_dashboard_performance_logging_custom_metric.png" />
+<img src="./documentation/img/grafana_mail_alert.png" />
