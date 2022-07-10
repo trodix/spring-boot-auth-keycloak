@@ -68,6 +68,7 @@ services:
     env_file:
       - ./monitoring/grafana/config.monitoring
     environment:
+        GF_SECURITY_ADMIN_PASSWORD: password
         GF_RENDERING_SERVER_URL: http://localhost:3001/render
         GF_RENDERING_CALLBACK_URL: http://localhost:3000/
         GF_LOG_FILTERS: rendering:debug

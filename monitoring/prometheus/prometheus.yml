@@ -9,9 +9,16 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:8000']
 
+  - job_name: 'host'
+
+    scrape_interval: 5s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['localhost:5100']
+
   - job_name: 'docker'
 
     scrape_interval: 5s
     metrics_path: /metrics
     static_configs:
-      - targets: ['localhost:5100', 'localhost:5110']
+      - targets: ['localhost:5110']
