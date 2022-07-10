@@ -62,16 +62,31 @@ services:
       - ./monitoring/prometheus/:/etc/prometheus/
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:9.0.2
     container_name: 'grafana'
     network_mode: host
     env_file:
       - ./monitoring/grafana/config.monitoring
+    environment:
+        GF_RENDERING_SERVER_URL: http://localhost:3001/render
+        GF_RENDERING_CALLBACK_URL: http://localhost:3000/
+        GF_LOG_FILTERS: rendering:debug
+        GF_ALERTING_ENABLED: 'false'
+        GF_UNIFIED_ALERTING_ENABLED: 'true'
+        GF_UNIFIED_ALERTING_SCREENSHOTS_CAPTURE: 'true'
+        GF_FORCE_MIGRATION: 'true'
+        GF_SMTP_ENABLED: 'true'
+        GF_SMTP_HOST: localhost:1025
     volumes:
       - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
       - ./monitoring/grafana/dashboards/:/var/lib/grafana/dashboards/
     depends_on:
       - prometheus
+  grafana-renderer:
+    image: grafana/grafana-image-renderer:latest
+    network_mode: host
+    environment:
+      HTTP_PORT: 3001
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -89,6 +104,9 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+  maildev:
+    image: maildev/maildev
+    network_mode: host
 
 networks:
   market-app-network:
