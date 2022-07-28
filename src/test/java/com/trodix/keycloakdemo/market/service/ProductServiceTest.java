@@ -22,6 +22,9 @@ public class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
 
+    @Mock
+    private JmsProducer jmsProducer;
+
     private ProductMapper productMapper;
 
     ProductService productService;
@@ -29,7 +32,7 @@ public class ProductServiceTest {
     @BeforeEach
     void initUseCase() {
         productMapper = Mappers.getMapper(ProductMapper.class);
-        productService = new ProductService(productRepository, productMapper);
+        productService = new ProductService(productRepository, productMapper, jmsProducer);
     }
 
     @Test

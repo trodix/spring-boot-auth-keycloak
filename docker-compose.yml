@@ -54,6 +54,13 @@ services:
       volumes:
         - openldap_data:/bitnami/openldap
 
+  activemq:
+      image: webcenter/activemq:5.14.3
+      ports:
+        - 8161:8161
+        - 61616:61616
+
+
   prometheus:
     image: prom/prometheus
     container_name: 'prometheus'
