@@ -8,6 +8,8 @@
 
 Available microservices:
 
+<img src="./documentation/img/schema_archi.png" />
+
 #### **Postgresql**
 
 > Database for keycloak
@@ -67,6 +69,12 @@ Port `3001`
 Port SMTP `1025`
 
 Port Webmail `1080`
+
+#### **Activemq**
+
+> Message Broker
+
+Port 61616
 
 ### Run backend API
 
