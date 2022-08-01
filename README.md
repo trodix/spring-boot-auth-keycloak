@@ -2,6 +2,9 @@
 
 ## Development setup
 
+Java version: JDK 17
+Maven version >= 3.6.3
+
 ### Run Microservices
 
 `docker-compose up`
@@ -9,6 +12,8 @@
 Available microservices:
 
 <img src="./documentation/img/schema_archi.png" />
+
+The blue part in the schema is part of the project <https://github.com/trodix/activemq-jms-client>
 
 #### **Postgresql**
 
