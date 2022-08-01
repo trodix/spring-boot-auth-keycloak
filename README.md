@@ -3,6 +3,7 @@
 ## Development setup
 
 Java version: JDK 17
+
 Maven version >= 3.8.x
 
 ### Run Microservices
