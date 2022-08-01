@@ -86,7 +86,7 @@ Port 61616
 
 `mvn spring-boot:run`
 
-Open REST API to <http://localhost:8000>
+Open REST API to <http://localhost:8000/swagger-ui/index.html>
 <img src="./documentation/img/rest_api_swagger_doc.png" />
 
 ### Add users and assign them to roles
