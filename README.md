@@ -82,6 +82,18 @@ Port Webmail `1080`
 
 Port 61616
 
+#### **Elasticsearch**
+
+> Search engine
+
+Port 9200
+
+#### **Kibana**
+
+> Search engine UI
+
+Port 5601
+
 ### Run backend API
 
 `mvn spring-boot:run`
