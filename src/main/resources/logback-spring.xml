@@ -41,4 +41,14 @@
         <appender-ref ref="Console" />
     </logger>
 
+    <logger name="com.trodix.keycloakdemo.market.service.ProductIndexerService" level="debug" additivity="false">
+        <appender-ref ref="RollingFile" />
+        <appender-ref ref="Console" />
+    </logger>
+
+    <!-- <logger name="org.springframework.web.client.RestTemplate" level="debug">
+        <appender-ref ref="RollingFile" />
+        <appender-ref ref="Console" />
+    </logger> -->
+
 </configuration>

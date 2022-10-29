@@ -1,0 +1,12 @@
+version: 1
+
+#!RESULT ERROR
+#!CONNECTION ldap://centos1.home:10389
+#!DATE 2022-10-29T14:12:17.654
+#!ERROR  [LDAP result code 53 - unwillingToPerform] no global superior knowledge
+dn: dc=trodix,dc=com
+objectClass: dcObject
+objectClass: organization
+dc: trodix
+o: example
+

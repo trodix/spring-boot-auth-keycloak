@@ -7,6 +7,7 @@ import org.mapstruct.factory.Mappers;
 import com.trodix.keycloakdemo.market.dto.request.CreateProductRequest;
 import com.trodix.keycloakdemo.market.dto.response.ProductResponse;
 import com.trodix.keycloakdemo.market.entity.Product;
+import com.trodix.keycloakdemo.market.entity.ProductIndex;
 import com.trodix.keycloakdemo.market.model.ProductModel;
 
 @Mapper(componentModel = "spring")
@@ -27,4 +28,7 @@ public interface ProductMapper {
     List<Product> productModelListToProductList(List<ProductModel> products);
 
     List<ProductModel> productListToProductModelList(List<Product> products);
+
+    @Mapping(source = "productId", target = "id")
+    ProductIndex productToProductIndex(Product product);
 }
