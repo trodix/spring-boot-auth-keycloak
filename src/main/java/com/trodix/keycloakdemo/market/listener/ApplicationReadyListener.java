@@ -88,7 +88,7 @@ public class ApplicationReadyListener implements ApplicationListener<Application
                         final long newId = Long.parseLong(String.valueOf(counter) + String.valueOf(p.getProductId()));
                         p.setProductId(newId);
                         productService.saveProduct(p);
-                        log.debug("Saved product: " + p.getProductId() + " " + p.getName());
+                        log.debug("Saved product: {} {}", p.getProductId(), p.getName());
                     } catch (final RuntimeException e) {
                         log.error("Error while parsing a row", e.getMessage());
                     }
