@@ -41,7 +41,7 @@ public class ProductControllerIT {
     ObjectMapper objectMapper;
 
     @Test
-    @WithMockUser(username = "foo", roles = "market-customer")
+    @WithMockUser(username = "foo", roles = "market-backend_market-customer")
     void getAllProducts_success_customer() throws Exception {
         final List<ProductModel> productModelList = new ArrayList<>();
         productModelList.add(new ProductModel(1L, "Riz Basmati", "Provenance Camargue"));
@@ -66,7 +66,7 @@ public class ProductControllerIT {
     }
 
     @Test
-    @WithMockUser(username = "foo", roles = "market-admin")
+    @WithMockUser(username = "foo", roles = "market-backend_market-admin")
     void getAllProducts_success_admin() throws Exception {
         final List<ProductModel> productModelList = new ArrayList<>();
         productModelList.add(new ProductModel(1L, "Riz Basmati", "Provenance Camargue"));
@@ -103,7 +103,7 @@ public class ProductControllerIT {
     }
 
     @Test
-    @WithMockUser(username = "foo", roles = "market-admin")
+    @WithMockUser(username = "foo", roles = "market-backend_market-admin")
     void createProduct_success() throws Exception {
         final CreateProductRequest productRequest = new CreateProductRequest();
         productRequest.setName("Riz Basmati");
@@ -126,7 +126,7 @@ public class ProductControllerIT {
     }
 
     @Test
-    @WithMockUser(username = "foo", roles = "market-customer")
+    @WithMockUser(username = "foo", roles = "market-backend_market-customer")
     void createProduct_403() throws Exception {
         final CreateProductRequest productRequest = new CreateProductRequest();
         productRequest.setName("Riz Basmati");
@@ -143,7 +143,7 @@ public class ProductControllerIT {
     }
 
     @Test
-    @WithMockUser(username = "foo", roles = "market-admin")
+    @WithMockUser(username = "foo", roles = "market-backend_market-admin")
     void createProduct_validation_name() throws Exception {
         final CreateProductRequest productRequest = new CreateProductRequest();
         productRequest.setName("");

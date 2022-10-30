@@ -64,7 +64,7 @@ public class ProductIndexerService {
             final List<ProductIndex> productIndexList = page.getContent().stream().map(productMapper::productToProductIndex).toList();
             
             final Runnable task = () -> createProductIndexBulk(productIndexList);
-            log.info("Adding new task to thread pool with page {}/{} ({} records)", pageIndex + 1, pageCount, count);
+            log.debug("Adding new task to thread pool with page {}/{} ({} records)", pageIndex + 1, pageCount, count);
             final Future<?> pendingTask = executor.submit(task);
             runningTasks.add(pendingTask);
         }
@@ -80,10 +80,10 @@ public class ProductIndexerService {
                         .withObject(product).build())
                 .collect(Collectors.toList());
 
-        log.info("Running Bulk index query for {} items", products.size());
+        log.debug("Running Bulk index query for {} items", products.size());
 
         List<IndexedObjectInformation> result = elasticsearchOperations.bulkIndex(queries, IndexCoordinates.of(PRODUCT_INDEX));
-        log.info("{} items indexed from bulk query", result.size());
+        log.debug("{} items indexed from bulk query", result.size());
 
         return result;
     }

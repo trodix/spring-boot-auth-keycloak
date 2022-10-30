@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    @RolesAllowed({"market-customer", "market-admin"})
+    @RolesAllowed({"market-backend_market-customer", "market-backend_market-admin"})
     public SearchResult<ProductResponse> searchProducts(@RequestParam final String query, @RequestParam(defaultValue = "0") final Integer limit) {
         final List<ProductModel> result = productService.findProductByNameOrDescriptionContaining(query, limit);
         final List<ProductResponse> productResponseList = productMapper.productModelListToProductResponseList(result);
@@ -42,14 +42,14 @@ public class ProductController {
     }
 
     @PostMapping
-    @RolesAllowed({"market-admin"})
+    @RolesAllowed({"market-backend_market-admin"})
     public ProductResponse createProduct(@Valid @RequestBody final CreateProductRequest productRequest) {
         final ProductModel productModel = productMapper.createProductRequestToProductModel(productRequest);
         return productMapper.productModelToProductResponse(productService.saveProduct(productModel));
     }
 
     @DeleteMapping("/{id}")
-    @RolesAllowed({"market-admin"})
+    @RolesAllowed({"market-backend_market-admin"})
     public void deleteProduct(@RequestAttribute final Long productId) {
         productService.deleteProduct(productId);
     }

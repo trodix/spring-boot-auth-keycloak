@@ -24,7 +24,7 @@ public class JmsProducer {
             final ObjectMapper objectMapper = new ObjectMapper();
             final String serializedObject = objectMapper.writeValueAsString(message);
             jmsTemplate.convertAndSend(topic, serializedObject);
-            log.info("Message sent to Topic: " + topic);
+            log.debug("Message sent to Topic: " + topic);
         } catch (final Exception e) {
             log.error("Recieved Exception during send Message: ", e);
         }
