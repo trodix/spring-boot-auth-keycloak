@@ -82,6 +82,18 @@ Port Webmail `1080`
 
 Port 61616
 
+#### **Elasticsearch**
+
+> Search engine
+
+Port 9200
+
+#### **Kibana**
+
+> Search engine UI
+
+Port 5601
+
 ### Run backend API
 
 `mvn spring-boot:run`
@@ -118,3 +130,72 @@ Open REST API to <http://localhost:8000/swagger-ui/index.html>
 <img src="./documentation/img/grafana_dashboard_jvm.png" />
 <img src="./documentation/img/grafana_dashboard_performance_logging_custom_metric.png" />
 <img src="./documentation/img/grafana_mail_alert.png" />
+
+## Elasticsearch
+
+```
+
+GET _nodes/stats
+
+PUT seafood
+
+PUT seafood/_create/1
+{
+  "name": "salmon",
+  "description": "pink or orange fish"
+}
+
+PUT seafood/_create/2
+{
+  "name": "pasta",
+  "description": "with salmon and cream"
+}
+
+GET seafood/_doc/1
+GET seafood/_doc/2
+
+POST seafood/_update/1
+{
+  "doc": {
+    "name": "salmon",
+    "description": "pink or orange fish from norway"
+  }
+}
+
+DELETE seafood/_doc/akCD_4MB44UVK78OVPPt
+
+GET seafood/_search
+{
+  "track_total_hits": true
+}
+
+GET seafood/_search
+{
+  "query": {
+    "match": {
+      "name": {
+        "query": "salmon"
+      }
+    }
+  },
+  "aggregations": {
+    "in_description": {
+      "significant_text": {
+        "field": "description"
+      }
+    }
+  }
+}
+
+
+GET seafood/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "salmon",
+      "fields": ["name", "description"]
+    }
+  }
+}
+
+```

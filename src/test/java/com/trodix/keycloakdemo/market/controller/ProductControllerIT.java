@@ -50,17 +50,18 @@ public class ProductControllerIT {
         final ProductResponse productResponse = new ProductResponse(1L, "Riz Basmati", "Provenance Camargue");
         productResponseList.add(productResponse);
 
-        given(productService.getAllProducts()).willReturn(productModelList);
+        given(productService.findProductByNameOrDescriptionContaining("Riz Basmati", 0)).willReturn(productModelList);
 
         final RequestBuilder request = MockMvcRequestBuilders
-                .get("/api/products")
+                .get("/api/products/search?query=Riz Basmati")
                 .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.[0].id").value(1L))
-                .andExpect(jsonPath("$.[0].name").value("Riz Basmati"))
-                .andExpect(jsonPath("$.[0].description").value("Provenance Camargue"))
+                .andExpect(jsonPath("$.resultCount").value(1))
+                .andExpect(jsonPath("$.items[0].id").value(1L))
+                .andExpect(jsonPath("$.items[0].name").value("Riz Basmati"))
+                .andExpect(jsonPath("$.items[0].description").value("Provenance Camargue"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -74,17 +75,18 @@ public class ProductControllerIT {
         final ProductResponse productResponse = new ProductResponse(1L, "Riz Basmati", "Provenance Camargue");
         productResponseList.add(productResponse);
 
-        given(productService.getAllProducts()).willReturn(productModelList);
+        given(productService.findProductByNameOrDescriptionContaining("Riz Basmati", 0)).willReturn(productModelList);
 
         final RequestBuilder request = MockMvcRequestBuilders
-                .get("/api/products")
+                .get("/api/products/search?query=Riz Basmati")
                 .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.[0].id").value(1L))
-                .andExpect(jsonPath("$.[0].name").value("Riz Basmati"))
-                .andExpect(jsonPath("$.[0].description").value("Provenance Camargue"))
+                .andExpect(jsonPath("$.resultCount").value(1))
+                .andExpect(jsonPath("$.items[0].id").value(1L))
+                .andExpect(jsonPath("$.items[0].name").value("Riz Basmati"))
+                .andExpect(jsonPath("$.items[0].description").value("Provenance Camargue"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -92,7 +94,7 @@ public class ProductControllerIT {
     @WithMockUser(username = "foo", roles = "bar")
     void getAllProducts_403() throws Exception {
         final RequestBuilder request = MockMvcRequestBuilders
-                .get("/api/products")
+                .get("/api/products/search?query=Tomates")
                 .accept(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)

@@ -44,25 +44,24 @@ public class ProductControllerTest {
         when(productService.saveProduct(any(ProductModel.class))).thenReturn(productModel);
 
         final ProductResponse response = productController.createProduct(request);
-        Assertions.assertThat(response.id()).isEqualTo(1L);
-        Assertions.assertThat(response.name()).isEqualTo("Tomates");
-        Assertions.assertThat(response.description()).isEqualTo("Du jardin");
+        Assertions.assertThat(response.getId()).isEqualTo(1L);
+        Assertions.assertThat(response.getName()).isEqualTo("Tomates");
+        Assertions.assertThat(response.getDescription()).isEqualTo("Du jardin");
     }
 
     @Test
     public void product_fetch_in_db_success() throws Exception {
         final List<ProductModel> productModelList = new ArrayList<>();
         productModelList.add(new ProductModel(1L, "Tomates", "Du jardin"));
-        productModelList.add(new ProductModel(2L, "Camenbert", "Fort et coulant"));
 
         final CreateProductRequest request = new CreateProductRequest();
         request.setName("Tomates");
         request.setDescription("Du jardin");
 
-        when(productService.getAllProducts()).thenReturn(productModelList);
+        when(productService.findProductByNameOrDescriptionContaining("Tomates", 0)).thenReturn(productModelList);
 
-        final List<ProductResponse> response = productController.getProducts();
-        Assertions.assertThat(response.size()).isEqualTo(2);
+        final List<ProductResponse> response = productController.searchProducts("Tomates", 0).getItems();
+        Assertions.assertThat(response.size()).isEqualTo(1);
     }
 
 }

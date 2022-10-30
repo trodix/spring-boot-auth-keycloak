@@ -63,6 +63,39 @@ services:
         - 8161:8161
         - 61616:61616
 
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      discovery.type: single-node
+      # ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+    networks:
+      - market-app-network
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: kibana:7.17.3
+    container_name: kibana
+    ports:
+      - 5601:5601
+      - 9600:9600
+    environment:
+      ES_JAVA_OPTS: -Xmx512m -Xms512m
+      SERVERNAME: kibana
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: kibana_system
+      # ELASTICSEARCH_PASSWORD: ${KIBANA_PASSWORD}
+    networks:
+      - market-app-network
+    volumes:
+      - kibana_data:/usr/share/kibana/data
+
 
   prometheus:
     image: prom/prometheus
@@ -126,4 +159,8 @@ volumes:
   postgres_data:
       driver: local
   openldap_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  kibana_data:
     driver: local
