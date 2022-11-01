@@ -28,8 +28,6 @@ Port `5432`
 
 Port `8080` for web ui
 
-Port `9990` for wildfly managment interface
-
 #### **OpenLDAP**
 
 > Users and Groups source (synchronized with Keycloak)
