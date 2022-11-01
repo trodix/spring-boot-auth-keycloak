@@ -2,66 +2,62 @@ version: '3'
 
 services:
   postgres:
-      build: 
-        context: ./keycloak/db
-        args:
-          BACKUP_FILE: ./dbexport.sql
-      environment:
-        POSTGRES_DB: keycloak
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
-      ports:
-        - 5432:5432
-      networks:
-        - market-app-network
-      volumes:
-        - postgres_data:/var/lib/postgresql/data
+    image: postgres:15.0
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - market-app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./keycloak/db/:/docker-entrypoint-initdb.d/
+
   keycloak:
-      image: quay.io/keycloak/keycloak:legacy
-      environment:
-        DB_VENDOR: POSTGRES
-        DB_ADDR: postgres
-        DB_DATABASE: keycloak
-        DB_USER: postgres
-        DB_SCHEMA: public
-        DB_PASSWORD: postgres
-        KEYCLOAK_USER: admin
-        KEYCLOAK_PASSWORD: admin
-        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
-        #JDBC_PARAMS: "ssl=true"
-        # KEYCLOAK_IMPORT: /tmp/realm-export.json
-      ports:
-        - 8080:8080
-        - 9990:9990
-      depends_on:
-        - postgres
-        - openldap
-      networks:
-        - market-app-network
-      volumes:
-        - ./keycloak/realms/realm-export.json:/tmp/realm-export.json
+    image: quay.io/keycloak/keycloak:19.0.3
+    environment:
+      KC_DB: postgres
+      KC_DB_SCHEMA: public
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_PORT: 5432
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME_STRICT: "false"
+    ports:
+      - 8080:8080
+    entrypoint: /opt/keycloak/bin/kc.sh start-dev --auto-build
+    depends_on:
+      - postgres
+      - openldap
+    networks:
+      - market-app-network
 
   openldap:
-      image: docker.io/bitnami/openldap:2.6
-      environment:
-          LDAP_ROOT: dc=trodix,dc=com
-          LDAP_ADMIN_USERNAME: admin
-          LDAP_ADMIN_PASSWORD: admin
-          LDAP_USERS: user1,user2, user3
-          LDAP_PASSWORDS: user1,user2,user3
-      ports:
-        - 1389:1389
-        - 1636:1636
-      networks:
-        - market-app-network
-      volumes:
-        - openldap_data:/bitnami/openldap
+    image: docker.io/bitnami/openldap:2.6
+    environment:
+        LDAP_ROOT: dc=trodix,dc=com
+        LDAP_ADMIN_USERNAME: admin
+        LDAP_ADMIN_PASSWORD: admin
+        LDAP_CUSTOM_LDIF_DIR: /ldifs
+    ports:
+      - 1389:1389
+      - 1636:1636
+    networks:
+      - market-app-network
+    volumes:
+      - openldap_data:/bitnami/openldap
+      - ./ldap/bootstrap:/ldifs
 
   activemq:
-      image: webcenter/activemq:5.14.3
-      ports:
-        - 8161:8161
-        - 61616:61616
+    image: webcenter/activemq:5.14.3
+    ports:
+      - 8161:8161
+      - 61616:61616
 
   elasticsearch:
     image: elasticsearch:7.17.3
@@ -111,16 +107,16 @@ services:
     env_file:
       - ./monitoring/grafana/config.monitoring
     environment:
-        GF_SECURITY_ADMIN_PASSWORD: password
-        GF_RENDERING_SERVER_URL: http://localhost:3001/render
-        GF_RENDERING_CALLBACK_URL: http://localhost:3000/
-        GF_LOG_FILTERS: rendering:debug
-        GF_ALERTING_ENABLED: 'false'
-        GF_UNIFIED_ALERTING_ENABLED: 'true'
-        GF_UNIFIED_ALERTING_SCREENSHOTS_CAPTURE: 'true'
-        GF_FORCE_MIGRATION: 'true'
-        GF_SMTP_ENABLED: 'true'
-        GF_SMTP_HOST: localhost:1025
+      GF_SECURITY_ADMIN_PASSWORD: password
+      GF_RENDERING_SERVER_URL: http://localhost:3001/render
+      GF_RENDERING_CALLBACK_URL: http://localhost:3000/
+      GF_LOG_FILTERS: rendering:debug
+      GF_ALERTING_ENABLED: 'false'
+      GF_UNIFIED_ALERTING_ENABLED: 'true'
+      GF_UNIFIED_ALERTING_SCREENSHOTS_CAPTURE: 'true'
+      GF_FORCE_MIGRATION: 'true'
+      GF_SMTP_ENABLED: 'true'
+      GF_SMTP_HOST: localhost:1025
     volumes:
       - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
       - ./monitoring/grafana/dashboards/:/var/lib/grafana/dashboards/
